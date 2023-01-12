@@ -1,5 +1,8 @@
+#!/bin/bash
+
 function head(){
-    echo '
+    echo 'Content-Type: txt/html;
+    
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,12 +25,20 @@ function body(){
 
 function form(){
     echo '
-    <form method="get">
-        <p>Vorname: <input type="text" name="vname" /></p>
-        <p>Nachname: <input type="text" name="nname" /></p>
-        <p>Mail: <input type="text" name="mail" /></p>
-        <p>Mobil: <input type="text" name="tel" /></p>
-        <p><input type="reset" value="Abbrechen"/><input type="submit" value="Los"/></p>
-    </form>
+        <form method="get">
+            <p>Vorname: <input type="text" name="vname" /></p>
+            <p>Nachname: <input type="text" name="nname" /></p>
+            <p>Mail: <input type="text" name="mail" /></p>
+            <p>Mobil: <input type="text" name="tel" /></p>
+            <p><input type="reset" value="Abbrechen"/><input type="submit" value="Los"/></p>
+        </form>
+    '
+}
+
+function footer(){
+    echo '
+        </div>
+    </body>
+</html>
     '
 }

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function cgi_decodevar() {
     [ $# -ne 1 ] && return
     local v t h
@@ -18,27 +20,42 @@ function cgi_decodevar() {
     return
 }
 
-saveIFS=$IFS
-IFS='=&'
-VARS=($QUERY_STRING)
-IFS=$saveIFS
+function cgi(){
+    saveIFS=$IFS
+    IFS='=&'
+    VARS=($QUERY_STRING)
+    IFS=$saveIFS
 
-for ((i=0; i<${#VARS[@]}; i+=2))
-do
-  curr="$(cgi_decodevar ${VARS[i]})"
-  next="$(cgi_decodevar ${VARS[i+2]})"
-  prev="$(cgi_decodevar ${VARS[i-2]})"
-  value="$(cgi_decodevar ${VARS[i+1]})"
+    for ((i=0; i<${#VARS[@]}; i+=2))
+    do
+        curr="$(cgi_decodevar ${VARS[i]})"
+        next="$(cgi_decodevar ${VARS[i+2]})"
+        prev="$(cgi_decodevar ${VARS[i-2]})"
+        value="$(cgi_decodevar ${VARS[i+1]})"
 
-  array=${curr%"[]"}
+        array=${curr%"[]"}
 
-  if  [ "$curr" == "$next" ] && [ "$curr" != "$prev" ] ;then
-      j=0
-      declare var_${array}[$j]="$value"
-  elif [ $i -gt 1 ] && [ "$curr" == "$prev" ]; then
-    j=$((j + 1))
-    declare var_${array}[$j]="$value"
-  else
-    declare var_$curr="$value"
-  fi
-done
+        if  [ "$curr" == "$next" ] && [ "$curr" != "$prev" ] ;then
+            j=0
+            declare var_${array}[$j]="$value"
+        elif [ $i -gt 1 ] && [ "$curr" == "$prev" ]; then
+            j=$((j + 1))
+            declare var_${array}[$j]="$value"
+        else
+            declare var_$curr="$value"
+        fi
+    done
+}
+
+function contacts(){
+    echo "<h1>$var_VNAME[0]</h1>"
+    echo '<table border="1">'
+    for I in $(cat contacts.txt); do
+        $VNAME=$(echo $I | cut -d ::: -f 1)
+        $NNAME=$(echo $I | cut -d ::: -f 2)
+        $MAIL=$(echo $I | cut -d ::: -f 3)
+        $MOBIL=$(echo $I | cut -d ::: -f 4)
+        echo "<tr><td>${VNAME}</td><td>${NNAME}</td><td>${MAIL}</td><td>${MOBIL}</td></tr>"
+    done
+    echo '</table>'
+}
