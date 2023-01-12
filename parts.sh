@@ -1,8 +1,9 @@
 #!/bin/bash
 
 function head(){
-    echo 'Content-Type: txt/html;
-    
+    echo 'Content-Type: text/html'
+    echo
+    echo '
 <!DOCTYPE html>
 <html>
     <head>

@@ -28,11 +28,10 @@ function cgi(){
 
     for ((i=0; i<${#VARS[@]}; i+=2))
     do
-        curr="$(cgi_decodevar ${VARS[i]})"
+        curr="$(cgi_decodevar ${VARS[i]})"   #Formularfelder
         next="$(cgi_decodevar ${VARS[i+2]})"
         prev="$(cgi_decodevar ${VARS[i-2]})"
-        value="$(cgi_decodevar ${VARS[i+1]})"
-
+        value="$(cgi_decodevar ${VARS[i+1]})" #Formulardaten
         array=${curr%"[]"}
 
         if  [ "$curr" == "$next" ] && [ "$curr" != "$prev" ] ;then
@@ -45,17 +44,20 @@ function cgi(){
             declare var_$curr="$value"
         fi
     done
+
+    echo "${var_vname[0]}:${var_nname[0]}:${var_mail[0]}:${var_tel[0]}:" >> contacts.txt
+
 }
 
 function contacts(){
-    echo "<h1>$var_VNAME[0]</h1>"
     echo '<table border="1">'
     for I in $(cat contacts.txt); do
-        $VNAME=$(echo $I | cut -d ::: -f 1)
-        $NNAME=$(echo $I | cut -d ::: -f 2)
-        $MAIL=$(echo $I | cut -d ::: -f 3)
-        $MOBIL=$(echo $I | cut -d ::: -f 4)
+        VNAME=$(echo $I | cut -d : -f 1)
+        NNAME=$(echo $I | cut -d : -f 2)
+        MAIL=$(echo $I | cut -d : -f 3)
+        MOBIL=$(echo $I | cut -d : -f 4)
         echo "<tr><td>${VNAME}</td><td>${NNAME}</td><td>${MAIL}</td><td>${MOBIL}</td></tr>"
     done
     echo '</table>'
+    echo '<form method="get"><input type="submit" value="Zurück"/></form>' 
 }
