@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#
-#
-#
-#
+# Author: Martin Rösner
+# Mail: roesner@elektronikschule.de
+# Bash CGI-Script zum laden und aufbereiten von
+# Formulardaten
 
 . parts.sh
 . source.sh
